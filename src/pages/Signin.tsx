@@ -1,8 +1,10 @@
 import { Logo } from "../icons/Logo";
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import api from "../config";
+import { Message } from "../components/Message";
 
 function Signin() {
   const navigate = useNavigate();
@@ -10,13 +12,48 @@ function Signin() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  function handleSubmit() {
+  const [status, setStatus] = useState<{
+    text: string;
+    type: "success" | "error" | null;
+  }>({
+    text: "",
+    type: null,
+  });
+
+  async function handleSubmit(e?: React.FormEvent) {
+    e?.preventDefault();
+
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
 
-    console.log("Username:", username);
-    console.log("Password:", password);
-    // Handle signin logic here
+    try {
+      const response = await api.post("/api/v1/auth/signin", {
+        username,
+        password,
+      });
+
+      setStatus({
+        text: "Signin successful! Redirecting to dashboard...",
+        type: "success",
+      });
+      localStorage.setItem("token", response.data.token);
+      setTimeout(() => navigate("/dashboard"), 2000);
+    } catch (error: any) {
+      const responseData = error.response?.data;
+      let errorMessage = "An unexpected error occurred.";
+
+      if (responseData?.errors) {
+        errorMessage = responseData.errors[0].message;
+      } else if (responseData?.message) {
+        errorMessage = responseData.message;
+      }
+
+      setStatus({
+        text: `Signin failed: ${errorMessage}`,
+        type: "error",
+      });
+      setTimeout(() => setStatus({ text: "", type: null }), 3000);
+    }
   }
 
   return (
@@ -39,6 +76,7 @@ function Signin() {
 
       {/* Main Content Container - Fills remaining space */}
       <main className="flex-1 flex flex-col items-center justify-center p-6">
+        <Message text={status.text} type={status.type} />
         <div className="w-full max-w-md">
           <h1 className="text-4xl font-bold mb-8 text-center text-gray-900">
             Sign In
