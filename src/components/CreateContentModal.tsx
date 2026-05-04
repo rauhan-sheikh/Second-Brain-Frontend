@@ -3,6 +3,7 @@ import { type ContentType } from "../utils";
 import { CrossIcon } from "../icons/CrossIcon";
 import { Input } from "./Input";
 import { Button } from "./Button";
+import api from "../config";
 
 export function CreateContentModal({
   open,
@@ -16,7 +17,7 @@ export function CreateContentModal({
   const linkRef = useRef<HTMLInputElement>(null);
   const typeRef = useRef<HTMLSelectElement>(null);
 
-  const [type, setType] = useState<ContentType>("video");
+  // const [type, setType] = useState<ContentType>("video");
 
   function addContent() {
     const title = titleRef.current?.value;
@@ -25,53 +26,79 @@ export function CreateContentModal({
     const contentType = typeRef.current?.value as ContentType;
 
     console.log({ title, description, link, contentType });
-
-    //     await axios.post(`${BACKEND_URL}/api/v1/content`, {
+    api
+      .post("/api/v1/content", {
+        title,
+        description,
+        link,
+        type: contentType,
+      })
+      .then((response) => {
+        console.log("Content added:", response.data);
+        onClose();
+      })
+      .catch((error) => {
+        console.error("Error adding content:", error);
+      });
   }
 
   return (
     <div>
       {open && (
-        <div>
-          <div className="w-screen h-screen  bg-slate-500 fixed top-0 left-0 opacity-60 flex justify-center"></div>
-          <div className="w-screen h-screen fixed top-0 left-0 flex justify-center">
-            <div className="flex flex-col justify-center">
-              <div className="bg-white opacity-100 p-4 rounded fixed flex justify-end flex-col">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="font-medium">Create Content</div>
-                  <div onClick={onClose} className="cursor-pointer">
-                    <CrossIcon />
-                  </div>
-                </div>
-                <div>
-                  <Input placeholder="Title" reference={titleRef} type="text" />
-                  <Input
-                    placeholder="Description"
-                    reference={descriptionRef}
-                    type="textarea"
-                  />
-                  <Input placeholder="Link" reference={linkRef} type="text" />
-                  <Input
-                    placeholder="Type"
-                    reference={typeRef}
-                    type="select"
-                    options={[
-                      { label: "YouTube", value: "video" },
-                      { label: "Article", value: "article" },
-                      { label: "Tweet", value: "tweet" },
-                      { label: "Book", value: "book" },
-                      { label: "Other", value: "other" },
-                    ]}
-                    value={type}
-                  />
-                  <div className="flex justify-center">
-                    <Button
-                      variant="primary"
-                      text="Create"
-                      onClick={addContent}
-                    />
-                  </div>
-                </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* 1. The Backdrop: Handles closing and provides visual blur */}
+          <div
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            onClick={onClose}
+          />
+
+          {/* 2. The Modal Card: Note stopPropagation so clicks here don't close it */}
+          <div
+            className="relative bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl border border-gray-100"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-gray-800">
+                Add New Content
+              </h2>
+              <button
+                onClick={onClose}
+                className="p-1 hover:bg-gray-100 rounded-full transition-colors text-gray-500"
+              >
+                <CrossIcon />
+              </button>
+            </div>
+
+            {/* Form Body - Using a gap for consistent spacing */}
+            <div className="flex flex-col gap-1">
+              <Input placeholder="Title" reference={titleRef} type="text" />
+              <Input
+                placeholder="Description"
+                reference={descriptionRef}
+                type="textarea"
+              />
+              <Input placeholder="Link" reference={linkRef} type="text" />
+              <Input
+                placeholder="Type"
+                reference={typeRef}
+                type="select"
+                options={[
+                  { label: "YouTube", value: "video" },
+                  { label: "Article", value: "article" },
+                  { label: "Tweet", value: "tweet" },
+                  { label: "Book", value: "book" },
+                  { label: "Other", value: "other" },
+                ]}
+              />
+
+              <div className="mt-2 flex justify-center gap-3">
+                <Button variant="secondary" text="Cancel" onClick={onClose} />
+                <Button
+                  variant="primary"
+                  text="Create Content"
+                  onClick={addContent}
+                />
               </div>
             </div>
           </div>

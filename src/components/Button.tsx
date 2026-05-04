@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 
 interface ButtonProps {
-  variant: "primary" | "secondary";
+  variant: "primary" | "secondary" | "signout";
   text: string;
   startIcon?: ReactElement;
   endIcon?: ReactElement;
@@ -13,10 +13,11 @@ interface ButtonProps {
 const variantStyles = {
   primary: "bg-primary hover:bg-primary-dark text-white",
   secondary: "bg-secondary text-secbuttontext hover:bg-secondary-dark",
+  signout: "bg-red-500 text-white hover:bg-red-600",
 };
 
 const defaultStyles =
-  "py-2 px-4 rounded-md font-light flex items-center justify-center";
+  "py-2 px-4 rounded-md font-normal flex items-center justify-center";
 
 export function Button({
   variant,
