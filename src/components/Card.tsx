@@ -4,16 +4,51 @@ import { TweetIcon } from "../icons/TweetIcon";
 import { BookIcon } from "../icons/BookIcon";
 import { OtherIcon } from "../icons/OtherIcon";
 import { DeleteIcon } from "../icons/DeleteIcon";
-import { getYouTubeEmbedUrl, type ContentType } from "../utils";
+import {
+  getYouTubeEmbedUrl,
+  type ContentType,
+  getTweetEmbedUrl,
+} from "../utils";
+import api from "../config";
 
 interface CardProps {
+  id: string;
   title: string;
   description: string;
   link: string;
   type: ContentType;
+  onDelete?: () => void;
+  isDeletable?: boolean; // Optional prop to control delete button visibility
 }
 
-export function Card({ title, description, link, type }: CardProps) {
+export function Card({
+  id,
+  title,
+  description,
+  link,
+  type,
+  onDelete,
+  isDeletable = true,
+}: CardProps) {
+  function handleDelete() {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete "${title}"?`,
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      api.delete(`/api/v1/content/`, { data: { contentId: id } });
+      if (onDelete) onDelete();
+    } catch (error) {
+      console.error("Error deleting content:", error);
+      window.alert("Failed to delete content");
+      // Optionally, you can add error handling feedback to the user here
+    }
+  }
+
   return (
     <div>
       <div className="p-4 border rounded-md shadow-sm border-gray-200 bg-white max-w-72 min-h-48 min-w-72">
@@ -29,9 +64,11 @@ export function Card({ title, description, link, type }: CardProps) {
             </div>
             <div className="text-lg font-semibold">{title}</div>
           </div>
-          <div>
-            <DeleteIcon />
-          </div>
+          {isDeletable && (
+            <div className="cursor-pointer" onClick={handleDelete}>
+              <DeleteIcon />
+            </div>
+          )}
         </div>
         <div className="text-gray-500 mb-4">{description}</div>
         <div className="mt-4 flex justify-center">
@@ -58,7 +95,7 @@ export function Card({ title, description, link, type }: CardProps) {
           )}
           {type === "tweet" && (
             <blockquote className="twitter-tweet">
-              <a href={link.replace("x.com", "twitter.com")}></a>
+              <a href={getTweetEmbedUrl(link) || ""}></a>
             </blockquote>
           )}
           {type === "book" && (

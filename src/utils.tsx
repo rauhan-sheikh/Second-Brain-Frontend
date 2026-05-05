@@ -12,3 +12,13 @@ export function getYouTubeEmbedUrl(url: string): string | null {
   }
 }
 export type ContentType = "article" | "tweet" | "video" | "book" | "other";
+
+export function getTweetEmbedUrl(url: string): string | null {
+  try {
+    const cleanLink = url.split("?")[0]; // Remove query parameters
+    const embedLink = cleanLink.replace("x.com", "twitter.com");
+    return embedLink;
+  } catch {
+    return null;
+  }
+}

@@ -1,32 +1,22 @@
 import { useEffect, useState } from "react";
 import api from "../config";
 
-export function useContent() {
+export function useSharedBrainContent(hash: string) {
   const [contents, setContents] = useState([]);
-  const [user, setUser] = useState({ username: "", _id: "" });
-
-  useEffect(() => {
-    api
-      .get("/api/v1/auth/me")
-      .then((response) => {
-        setUser({
-          username: response.data.username,
-          _id: response.data._id,
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching user info:", error);
-      });
-  }, []);
+  const [user, setUser] = useState("");
+  const [status, setStatus] = useState(false); // 'loading', 'success', 'error'
 
   function refresh() {
     api
-      .get("/api/v1/content")
+      .get(`/api/v1/brain/${hash}`)
       .then((response) => {
         setContents(response.data.contents);
+        setUser(response.data.username);
+        setStatus(true);
       })
       .catch((error) => {
         console.error("Error fetching content:", error);
+        setStatus(false);
       });
   }
 
@@ -36,5 +26,5 @@ export function useContent() {
     return () => clearInterval(interval);
   }, []);
 
-  return { contents, refresh, user };
+  return { contents, refresh, user, status };
 }

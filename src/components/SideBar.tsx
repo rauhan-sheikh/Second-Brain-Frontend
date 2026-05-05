@@ -8,12 +8,18 @@ import { VideoIcon } from "../icons/VideoIcon";
 import { Button } from "./Button";
 import { SideBarItem } from "./SideBarItem";
 
-export function SideBar() {
+export function SideBar({
+  signoutEnabled = true,
+}: {
+  signoutEnabled?: boolean;
+}) {
   const navigate = useNavigate();
 
   function handleSignOut() {
-    localStorage.removeItem("token");
-    navigate("/signin");
+    setTimeout(() => {
+      localStorage.removeItem("token");
+      navigate("/signin");
+    }, 1000);
   }
 
   return (
@@ -35,7 +41,9 @@ export function SideBar() {
           </div>
         </div>
         <div className="flex flex-col justify-center gap-5">
-          <Button variant="signout" text="Sign Out" onClick={handleSignOut} />
+          {signoutEnabled && (
+            <Button variant="signout" text="Sign Out" onClick={handleSignOut} />
+          )}
           <div className="text-sm text-gray-500 mb-4">
             Made with ❤️ by Rauhan Sheikh
           </div>
