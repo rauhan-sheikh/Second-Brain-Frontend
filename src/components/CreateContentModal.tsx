@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { type ContentType } from "../utils";
 import { CrossIcon } from "../icons/CrossIcon";
 import { Input } from "./Input";
