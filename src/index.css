@@ -7,15 +7,3 @@
   --color-secbuttontext: #615ad4;
   --color-background: #f9fafb;
 }
-
-@layer components {
-  .my-masonry-grid {
-    @apply flex -ml-6 w-auto; /* -ml-6 matches gap-6 (1.5rem) */
-  }
-  .my-masonry-grid_column {
-    @apply pl-6 bg-clip-padding;
-  }
-  .my-masonry-grid_column > div {
-    @apply mb-6;
-  }
-}

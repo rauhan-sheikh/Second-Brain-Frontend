@@ -20,12 +20,14 @@ function Dashboard() {
         text="Share Brain"
         startIcon={<ShareIcon />}
         onClick={() => setShareModalOpen(true)}
+        className="md:px4 px2"
       />
       <Button
         variant="primary"
         text="Add Content"
         startIcon={<PlusIcon />}
         onClick={() => setAddContentModalOpen(true)}
+        className="md:px4 px2"
       />
     </>
   );

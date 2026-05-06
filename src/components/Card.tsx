@@ -10,6 +10,7 @@ import {
   getTweetEmbedUrl,
 } from "../utils";
 import api from "../config";
+import { useEffect } from "react";
 
 interface CardProps {
   id: string;
@@ -30,7 +31,15 @@ export function Card({
   onDelete,
   isDeletable = true,
 }: CardProps) {
-  function handleDelete() {
+  useEffect(() => {
+    // Check if the twitter object exists on the window
+    // @ts-ignore (Twitter adds 'twttr' to window dynamically)
+    if (window.twttr) {
+      // @ts-ignore
+      window.twttr.widgets.load();
+    }
+  }, [type, link]);
+  async function handleDelete() {
     const confirmDelete = window.confirm(
       `Are you sure you want to delete "${title}"?`,
     );
@@ -40,18 +49,17 @@ export function Card({
     }
 
     try {
-      api.delete(`/api/v1/content/`, { data: { contentId: id } });
+      await api.delete(`/api/v1/content/`, { data: { contentId: id } });
       if (onDelete) onDelete();
     } catch (error) {
       console.error("Error deleting content:", error);
       window.alert("Failed to delete content");
-      // Optionally, you can add error handling feedback to the user here
     }
   }
 
   return (
     <div>
-      <div className="p-4 border rounded-md shadow-sm border-gray-200 bg-white max-w-72 min-h-48 min-w-72">
+      <div className="p-4 border rounded-md shadow-sm border-gray-200 bg-white w-full min-h-48">
         <div className="flex justify-between">
           <div className="flex items-center">
             <div className="mx-2 text-gray-500">
@@ -94,9 +102,11 @@ export function Card({
             ></iframe>
           )}
           {type === "tweet" && (
-            <blockquote className="twitter-tweet">
-              <a href={getTweetEmbedUrl(link) || ""}></a>
-            </blockquote>
+            <div className="w-full min-h-[300px] flex justify-center">
+              <blockquote className="twitter-tweet">
+                <a href={getTweetEmbedUrl(link) || ""}></a>
+              </blockquote>
+            </div>
           )}
           {type === "book" && (
             <iframe

@@ -8,6 +8,7 @@ interface ButtonProps {
   onClick?: () => void;
   fullWidth?: boolean;
   loading?: boolean;
+  className?: string;
 }
 
 const variantStyles = {
@@ -27,17 +28,20 @@ export function Button({
   onClick,
   fullWidth = false,
   loading = false,
+  className = "",
 }: ButtonProps) {
   return (
     <button
       onClick={onClick}
       className={`${defaultStyles} ${variantStyles[variant]} ${
         fullWidth ? "w-full" : ""
-      } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+      } ${loading ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
       disabled={loading}
     >
-      {startIcon && <span className="mr-2">{startIcon}</span>}
-      {text}
+      {startIcon && (
+        <span className={`${text ? "md:mr-2" : ""}`}>{startIcon}</span>
+      )}
+      <span className="hidden md:inline"> {text} </span>
       {endIcon && <span className="ml-2">{endIcon}</span>}
     </button>
   );
