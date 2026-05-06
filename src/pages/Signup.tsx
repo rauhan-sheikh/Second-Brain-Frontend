@@ -53,7 +53,10 @@ function Signup() {
   return (
     <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
       <header className="flex items-center justify-between p-4 bg-white border-b border-gray-200">
-        <div className="flex items-center text-2xl font-semibold text-gray-800">
+        <div
+          className="flex items-center text-2xl font-semibold text-gray-800 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <div className="w-10 pr-2">
             <Logo />
           </div>
