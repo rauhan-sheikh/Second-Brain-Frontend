@@ -9,6 +9,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   loading?: boolean;
   className?: string;
+  isDashboard?: boolean;
 }
 
 const variantStyles = {
@@ -29,6 +30,7 @@ export function Button({
   fullWidth = false,
   loading = false,
   className = "",
+  isDashboard = false,
 }: ButtonProps) {
   return (
     <button
@@ -41,7 +43,7 @@ export function Button({
       {startIcon && (
         <span className={`${text ? "md:mr-2" : ""}`}>{startIcon}</span>
       )}
-      <span className="hidden md:inline"> {text} </span>
+      <span className={`${isDashboard ? "hidden md:inline" : ""}`}>{text}</span>
       {endIcon && <span className="ml-2">{endIcon}</span>}
     </button>
   );

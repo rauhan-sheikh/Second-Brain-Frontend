@@ -21,6 +21,7 @@ function Dashboard() {
         startIcon={<ShareIcon />}
         onClick={() => setShareModalOpen(true)}
         className="md:px4 px2"
+        isDashboard={true}
       />
       <Button
         variant="primary"
@@ -28,6 +29,7 @@ function Dashboard() {
         startIcon={<PlusIcon />}
         onClick={() => setAddContentModalOpen(true)}
         className="md:px4 px2"
+        isDashboard={true}
       />
     </>
   );
