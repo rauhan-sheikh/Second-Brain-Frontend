@@ -4,6 +4,7 @@ import api from "../config";
 export function useContent() {
   const [contents, setContents] = useState([]);
   const [user, setUser] = useState({ username: "", _id: "" });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api
@@ -20,7 +21,7 @@ export function useContent() {
   }, []);
 
   function refresh() {
-    api
+    return api
       .get("/api/v1/content")
       .then((response) => {
         setContents(response.data.contents);
@@ -31,10 +32,10 @@ export function useContent() {
   }
 
   useEffect(() => {
-    refresh();
+    refresh().finally(() => setLoading(false));
     let interval = setInterval(refresh, 10 * 1000); // Refresh every 10 seconds
     return () => clearInterval(interval);
   }, []);
 
-  return { contents, refresh, user };
+  return { contents, refresh, user, loading };
 }
