@@ -4,6 +4,7 @@ import { CrossIcon } from "../icons/CrossIcon";
 import { Input } from "./Input";
 import { Button } from "./Button";
 import api from "../config";
+import { toast } from "react-hot-toast";
 
 export function CreateContentModal({
   open,
@@ -17,29 +18,31 @@ export function CreateContentModal({
   const linkRef = useRef<HTMLInputElement>(null);
   const typeRef = useRef<HTMLSelectElement>(null);
 
-  // const [type, setType] = useState<ContentType>("video");
-
-  function addContent() {
+  async function addContent() {
     const title = titleRef.current?.value;
     const description = descriptionRef.current?.value;
     const link = linkRef.current?.value;
     const contentType = typeRef.current?.value as ContentType;
 
-    console.log({ title, description, link, contentType });
-    api
-      .post("/api/v1/content", {
+    try {
+      await api.post("/api/v1/content", {
         title,
         description,
         link,
         type: contentType,
-      })
-      .then((response) => {
-        console.log("Content added:", response.data);
-        onClose();
-      })
-      .catch((error) => {
-        console.error("Error adding content:", error);
       });
+      toast.success("Content added successfully!");
+      onClose();
+    } catch (error: any) {
+      const responseData = error.response?.data;
+
+      const errorMessage =
+        responseData?.errors?.map((err: any) => err.message).join(", ") ||
+        responseData?.message ||
+        error.message ||
+        "An unexpected error occurred while adding content.";
+      toast.error(errorMessage);
+    }
   }
 
   return (

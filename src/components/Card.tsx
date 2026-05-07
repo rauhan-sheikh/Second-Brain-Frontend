@@ -59,7 +59,7 @@ export function Card({
 
   return (
     <div>
-      <div className="p-4 border rounded-md shadow-sm border-gray-200 bg-white w-full min-h-48">
+      <div className="p-4 border rounded-md shadow-sm border-gray-200 bg-white w-full">
         <div className="flex justify-between">
           <div className="flex items-center">
             <div className="mx-2 text-gray-500">
@@ -80,7 +80,7 @@ export function Card({
         </div>
         <div className="text-gray-500 mb-4">{description}</div>
         <div className="mt-4 flex justify-center">
-          {(type === "article" || type === "other") && (
+          {(type === "article" || (type === "other" && link)) && (
             <a
               href={link}
               target="_blank"
