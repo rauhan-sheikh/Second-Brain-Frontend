@@ -90,7 +90,7 @@ export function CreateContentModal({
                   { label: "YouTube", value: "video" },
                   { label: "Article", value: "article" },
                   { label: "Tweet", value: "tweet" },
-                  { label: "Book", value: "book" },
+                  { label: "Book [openlibrary.org]", value: "book" },
                   { label: "Other", value: "other" },
                 ]}
               />
