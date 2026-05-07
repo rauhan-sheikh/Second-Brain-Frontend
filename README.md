@@ -1,73 +1,80 @@
-# React + TypeScript + Vite
+# SecondBrain Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SecondBrain is a personal knowledge management application that allows users to collect, organize, and share various types of content such as articles, tweets, videos, books, and other resources. Think of it as your digital "second brain" where you can store and categorize information for easy retrieval and sharing.
 
-Currently, two official plugins are available:
+This is the frontend application for SecondBrain, built with React, TypeScript, and Vite.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Content Management**: Store and organize different types of content (articles, tweets, videos, books, other)
+- **Responsive Masonry Layout**: Beautiful grid layout that adapts to different screen sizes
+- **Content Filtering**: Filter content by type (article, tweet, video, book, other)
+- **Brain Sharing**: Generate shareable links to publicly share your entire content collection
+- **User Authentication**: Secure signup/signin with JWT tokens
+- **Real-time Updates**: Content refreshes automatically every 10 seconds
+- **Mobile Responsive**: Works seamlessly on desktop and mobile devices
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+### Frontend
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React 19** with **TypeScript**
+- **Vite** for fast development and building
+- **Tailwind CSS** for styling
+- **React Router** for navigation
+- **Axios** for API calls
+- **React Hot Toast** for notifications
+- **Macy.js** for masonry layout
+- **React Icons** for icon components
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Install dependencies:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+   ```bash
+   npm install
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Set up environment variables:
+   Create a `.env` file with:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+   ```
+   VITE_BACKEND_URL=http://localhost:3000
+   VITE_FRONTEND_URL=http://localhost:5173
+   ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build
+
+## Usage
+
+1. **Sign Up**: Create a new account
+2. **Add Content**: Click "Add Content" to create new entries
+3. **Organize**: Use tags and content types to organize your knowledge
+4. **Filter**: Use the sidebar to filter content by type
+5. **Share**: Generate a shareable link to share your brain publicly
+
+## Content Types
+
+- **Article**: Blog posts, news articles, web pages
+- **Tweet**: Twitter/X posts
+- **Video**: YouTube videos and other video content
+- **Book**: Books with links to Open Library or other sources
+- **Other**: Any other type of content
+
+## Future Enhancements
+
+- Search functionality
+- Content import from various sources
+- Collaboration features
+- Advanced tagging and categorization
+- Export functionality
